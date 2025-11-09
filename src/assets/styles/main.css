@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Default dark mode - applied via class in HTML */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure SVG icons don't grow unexpectedly */
+  svg {
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  /* Constrain SVGs without explicit size classes */
+  svg:not([class*="w-"]):not([class*="h-"]):not([width]):not([height]) {
+    max-width: 1.5rem;
+    max-height: 1.5rem;
+  }
+
+  /* Prevent any element from growing too large */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Ensure images and media don't break layout */
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Prevent layout breaking */
+  body, html {
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Spinner component */
+  .spinner {
+    @apply border-4 border-gray-200 dark:border-gray-700 border-t-primary-600 rounded-full animate-spin mx-auto;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Custom button styles */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+      /* Card styles */
+      .card {
+        @apply bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 transition-all duration-200;
+      }
+      
+      /* Enhanced card hover effects */
+      .card:hover {
+        transform: translateY(-2px);
+      }
+      
+      /* Gradient backgrounds for cards */
+      .card-gradient {
+        background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%);
+      }
+      
+      .dark .card-gradient {
+        background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+      }
+
+      /* Input styles */
+      .input {
+        @apply block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed;
+      }
+      
+      /* Enhanced focus states for accessibility */
+      .input:focus {
+        outline: 2px solid #60A5FA;
+        outline-offset: 2px;
+      }
+
+      /* Label styles */
+      .label {
+        @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+      }
+    }
+
+    @layer utilities {
+      /* Fade-in animation for messages */
+      .animate-fade-in {
+        animation: fadeIn 0.3s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
