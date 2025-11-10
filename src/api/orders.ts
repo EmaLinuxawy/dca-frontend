@@ -8,16 +8,18 @@ export interface OrdersQueryParams {
   limit?: number
 }
 
+const ORDERS_ENDPOINT = '/orders/'
+
 export const ordersApi = {
   // Get all orders
   getAll: async (params: OrdersQueryParams = {}): Promise<Order[]> => {
-    const response = await apiClient.get<Order[]>('/orders', { params })
+    const response = await apiClient.get<Order[]>(ORDERS_ENDPOINT, { params })
     return response.data
   },
 
   // Get order by ID
   getById: async (id: number): Promise<Order> => {
-    const response = await apiClient.get<Order>(`/orders/${id}`)
+    const response = await apiClient.get<Order>(`${ORDERS_ENDPOINT}${id}`)
     return response.data
   },
 }

@@ -1,7 +1,24 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios'
+import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+
+const redirectToLogin = () => {
+  import('@/router')
+    .then(({ default: router }) => {
+      try {
+        const current = router.currentRoute.value
+        const redirect = current.meta.requiresAuth ? current.fullPath : undefined
+        router.replace({ name: 'Login', query: redirect ? { redirect } : undefined })
+      } catch {
+        window.location.href = '/login'
+      }
+    })
+    .catch(() => {
+      window.location.href = '/login'
+    })
+}
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -73,7 +90,7 @@ apiClient.interceptors.response.use(
       const refreshToken = authStore.refreshToken
       if (!refreshToken) {
         authStore.logout()
-        window.location.href = '/login' // Force reload to clean up state
+        redirectToLogin()
         return Promise.reject(error)
       }
 
@@ -98,7 +115,7 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null)
         authStore.logout()
-        window.location.href = '/login' // Force reload to clean up state
+        redirectToLogin()
         return Promise.reject(refreshError)
       } finally {
         isRefreshing = false

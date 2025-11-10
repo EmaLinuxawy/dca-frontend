@@ -90,6 +90,19 @@ const authStore = useAuthStore()
 const username = ref('')
 const password = ref('')
 
+const getSafeRedirect = (value: unknown): string => {
+  if (typeof value !== 'string') {
+    return '/'
+  }
+
+  // Only allow same-origin relative paths
+  if (value.startsWith('/') && !value.startsWith('//')) {
+    return value
+  }
+
+  return '/'
+}
+
 const handleLogin = async () => {
   try {
     await authStore.login({
@@ -98,7 +111,7 @@ const handleLogin = async () => {
     })
     
     // Navigate after login succeeds
-    const redirect = (route.query.redirect as string) || '/'
+    const redirect = getSafeRedirect(route.query.redirect)
     await router.push(redirect)
   } catch (error) {
     // Error handled by store - error message will be displayed

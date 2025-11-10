@@ -69,7 +69,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
@@ -78,6 +78,16 @@ router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
 
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  const isSafeRedirect = (value: unknown): string | null => {
+    if (typeof value !== 'string') {
+      return null
+    }
+    if (value.startsWith('/') && !value.startsWith('//')) {
+      return value
+    }
+    return null
+  }
 
   if (requiresAuth && !authStore.isAuthenticated) {
     // Not authenticated, redirect to login
@@ -98,7 +108,8 @@ router.beforeEach(async (to, _from, next) => {
       } catch (error) {
         // Token is likely invalid if fetching user fails
         authStore.logout()
-        next({ name: 'Login', query: { redirect: to.fullPath } })
+        const safeRedirect = isSafeRedirect(to.fullPath)
+        next({ name: 'Login', query: safeRedirect ? { redirect: safeRedirect } : undefined })
       }
     } else {
       // Authenticated and user data is loaded
