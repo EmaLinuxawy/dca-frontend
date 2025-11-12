@@ -1,13 +1,7 @@
 import apiClient from './client'
-import type { UserCreate, UserLogin, UserResponse, Token, TokenData } from './types'
+import type { UserLogin, UserResponse, Token, TokenData } from './types'
 
 export const authApi = {
-  // Register new user
-  register: async (data: UserCreate): Promise<UserResponse> => {
-    const response = await apiClient.post<UserResponse>('/auth/register', data)
-    return response.data
-  },
-
   // Login
   login: async (data: UserLogin): Promise<Token> => {
     // Use URLSearchParams for form-urlencoded (OAuth2PasswordRequestForm expects this)

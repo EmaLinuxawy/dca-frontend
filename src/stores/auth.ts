@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authApi } from '@/api/auth'
-import type { UserResponse, UserLogin, UserCreate } from '@/api/types'
+import type { UserResponse, UserLogin } from '@/api/types'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -30,7 +30,30 @@ export const useAuthStore = defineStore(
         return tokenData
       } catch (err: any) {
         console.error('Login failed:', err)
-        error.value = err.response?.data?.detail || 'Login failed'
+        
+        // Extract error message from various error formats
+        let errorMessage = 'Login failed. Please check your credentials.'
+        
+        if (err.response) {
+          // HTTP error response
+          const data = err.response.data
+          if (data?.detail) {
+            // FastAPI error format
+            errorMessage = typeof data.detail === 'string' ? data.detail : data.detail.message || errorMessage
+          } else if (data?.message) {
+            errorMessage = data.message
+          } else if (err.response.status === 401) {
+            errorMessage = 'Invalid username or password'
+          } else if (err.response.status === 400) {
+            errorMessage = 'Invalid request. Please check your credentials.'
+          }
+        } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+          errorMessage = 'Request timed out. Please check your connection and try again.'
+        } else if (err.message) {
+          errorMessage = err.message
+        }
+        
+        error.value = errorMessage
         logout() // Clear state on login failure
         throw err
       } finally {
@@ -38,21 +61,6 @@ export const useAuthStore = defineStore(
       }
     }
 
-    const register = async (userData: UserCreate) => {
-      isLoading.value = true
-      error.value = null
-      try {
-        const user = await authApi.register(userData)
-        // Auto-login after registration
-        await login({ username: userData.username, password: userData.password })
-        return user
-      } catch (err: any) {
-        error.value = err.response?.data?.detail || 'Registration failed'
-        throw err
-      } finally {
-        isLoading.value = false
-      }
-    }
 
     const fetchUser = async () => {
       if (!accessToken.value) return
@@ -86,7 +94,6 @@ export const useAuthStore = defineStore(
       isAuthenticated,
       isUserLoaded,
       login,
-      register,
       fetchUser,
       logout,
       setTokens,

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4">
+  <div class="h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4 overflow-y-auto">
     <div class="card w-full max-w-md">
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-12 h-12 bg-primary-600 dark:bg-primary-500 rounded-xl mb-4 shadow-lg">
