@@ -12,7 +12,7 @@
       </div>
       
       <form @submit.prevent="handleLogin" class="space-y-6">
-        <ErrorAlert v-if="authStore.error" :error="authStore.error" @dismiss="authStore.error = null" />
+        <ErrorAlert v-if="loginError" :error="loginError" @dismiss="loginError = null" />
         
         <div>
           <label for="username" class="label">Username or Email</label>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import ErrorAlert from '@/components/Common/ErrorAlert.vue'
@@ -89,6 +89,14 @@ const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
+const loginError = ref<string | null>(null)
+
+// Watch for errors from the auth store
+watch(() => authStore.error, (newError) => {
+  if (newError) {
+    loginError.value = newError
+  }
+}, { immediate: true })
 
 const getSafeRedirect = (value: unknown): string => {
   if (typeof value !== 'string') {
@@ -104,6 +112,8 @@ const getSafeRedirect = (value: unknown): string => {
 }
 
 const handleLogin = async () => {
+  loginError.value = null // Clear previous errors
+  
   try {
     await authStore.login({
       username: username.value,
@@ -113,8 +123,13 @@ const handleLogin = async () => {
     // Navigate after login succeeds
     const redirect = getSafeRedirect(route.query.redirect)
     await router.push(redirect)
-  } catch (error) {
-    // Error handled by store - error message will be displayed
+  } catch (error: any) {
+    // Ensure error is displayed - use store error or fallback
+    if (authStore.error) {
+      loginError.value = authStore.error
+    } else {
+      loginError.value = 'Login failed. Please check your credentials.'
+    }
   }
 }
 </script>

@@ -354,6 +354,7 @@
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Side</th>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Size</th>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Price</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Reason</th>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
                 </tr>
@@ -381,6 +382,11 @@
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-100">{{ (order.size_base ?? 0).toFixed(6) }}</td>
                   <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-100">${{ (order.price_quote ?? 0).toFixed(4) }}</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">
+                    <span :class="getOrderReasonBadgeClasses(order.reason)">
+                      {{ formatOrderReason(order.reason) }}
+                    </span>
+                  </td>
                   <td class="px-4 py-3 whitespace-nowrap text-sm"><StatusBadge :status="order.status" /></td>
                   <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {{ order.placed_at ? formatTableDate(order.placed_at) : '-' }}
@@ -470,6 +476,7 @@ import { statsApi } from '@/api/stats'
 import { ordersApi } from '@/api/orders'
 import type { StrategyStats, Order } from '@/api/types'
 import { formatTableDate } from '@/utils/dateFormatter'
+import { formatOrderReason, getOrderReasonBadgeClasses } from '@/utils/orderHelpers'
 import LoadingSpinner from '@/components/Common/LoadingSpinner.vue'
 import StatusBadge from '@/components/Common/StatusBadge.vue'
 import ErrorAlert from '@/components/Common/ErrorAlert.vue'

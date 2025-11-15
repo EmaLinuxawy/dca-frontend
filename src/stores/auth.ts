@@ -54,7 +54,10 @@ export const useAuthStore = defineStore(
         }
         
         error.value = errorMessage
-        logout() // Clear state on login failure
+        // Clear tokens on login failure but keep error message visible
+        accessToken.value = null
+        refreshToken.value = null
+        currentUser.value = null
         throw err
       } finally {
         isLoading.value = false
