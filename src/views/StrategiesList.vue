@@ -316,7 +316,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStrategiesStore } from '@/stores/strategies'
 import { statsApi } from '@/api/stats'
 import type { StrategyStats } from '@/api/types'
@@ -332,7 +332,6 @@ const showDeleteConfirm = ref(false)
 const strategyToDelete = ref<number | null>(null)
 const runningStrategyId = ref<number | null>(null)
 const successMessage = ref<string | null>(null)
-const activeDropdown = ref<number | null>(null)
 const strategyStatsMap = ref<Map<number, StrategyStats>>(new Map())
 
 const parentRef = ref<HTMLElement | null>(null)
@@ -393,10 +392,6 @@ const loadStrategyStats = async () => {
   }
 }
 
-const toggleDropdown = (strategyId: number) => {
-  activeDropdown.value = activeDropdown.value === strategyId ? null : strategyId
-}
-
 const toggleStrategyStatus = async (id: number, currentStatus: boolean) => {
   try {
     if (currentStatus) {
@@ -409,21 +404,9 @@ const toggleStrategyStatus = async (id: number, currentStatus: boolean) => {
   }
 }
 
-// Close dropdown when clicking outside
 onMounted(async () => {
   await strategiesStore.fetchAll()
   await loadStrategyStats()
-  
-  const handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as HTMLElement
-    if (!target.closest('.dropdown-container')) {
-      activeDropdown.value = null
-    }
-  }
-  document.addEventListener('click', handleClickOutside)
-  onUnmounted(() => {
-    document.removeEventListener('click', handleClickOutside)
-  })
 })
 
 const confirmDelete = (id: number) => {
@@ -446,7 +429,6 @@ const deleteStrategy = async () => {
 const runStrategyNow = async (id: number) => {
   runningStrategyId.value = id
   successMessage.value = null
-  activeDropdown.value = null
   try {
     await strategiesStore.runNow(id)
     successMessage.value = 'Strategy triggered successfully!'
@@ -467,7 +449,6 @@ const runStrategyNow = async (id: number) => {
 }
 
 const pauseStrategy = async (id: number) => {
-  activeDropdown.value = null
   try {
     await strategiesStore.pause(id)
   } catch (error) {
@@ -476,7 +457,6 @@ const pauseStrategy = async (id: number) => {
 }
 
 const resumeStrategy = async (id: number) => {
-  activeDropdown.value = null
   try {
     await strategiesStore.resume(id)
   } catch (error) {
