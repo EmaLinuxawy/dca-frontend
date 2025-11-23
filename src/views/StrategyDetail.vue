@@ -6,7 +6,7 @@
     
     <div v-else-if="strategy">
       <!-- Pause Banner -->
-      <div v-if="!strategy.enabled" class="card mb-6 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-800">
+      <div v-if="!strategy.enabled" class="glass-card mb-6 bg-amber-50/50 dark:bg-amber-900/20 border-amber-200/50 dark:border-amber-800/50 p-4 rounded-2xl">
         <div class="flex items-center space-x-3">
           <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -33,7 +33,7 @@
           <button 
             @click="runNow" 
             :disabled="runningNow"
-            class="bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 flex items-center gap-2"
+            class="bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white font-bold py-2 px-6 rounded-lg shadow-lg shadow-primary-500/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 flex items-center gap-2 transform hover:scale-105 active:scale-95"
           >
             <svg v-if="runningNow" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -67,8 +67,27 @@
         </div>
       </div>
       
-      <!-- Statistics - Grouped by Meaning (Most Important - Top) -->
-      <div v-if="stats" class="card mb-6">
+      <!-- Tab Navigation -->
+      <div class="flex space-x-1 bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-xl mb-6 backdrop-blur-sm">
+        <button
+          v-for="tab in ['Overview', 'Configuration', 'Orders']"
+          :key="tab"
+          @click="activeTab = tab"
+          :class="[
+            'flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50',
+            activeTab === tab
+              ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
+          ]"
+        >
+          {{ tab }}
+        </button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div v-if="activeTab === 'Overview'" class="space-y-6">
+        <!-- Statistics - Grouped by Meaning (Most Important - Top) -->
+        <div v-if="stats" class="glass-card p-6 rounded-2xl">
         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Statistics</h2>
         
         <!-- Performance Metrics Group -->
@@ -80,18 +99,18 @@
             Performance
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="p-4 bg-gradient-to-br from-green-50/50 to-transparent dark:from-green-900/10 dark:to-transparent rounded-lg border border-green-200/50 dark:border-green-800/50">
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">ROI</p>
+            <div class="p-4 bg-gradient-to-br from-green-50/30 to-transparent dark:from-green-900/20 dark:to-transparent rounded-xl border border-green-200/30 dark:border-green-800/30 backdrop-blur-sm">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wider">ROI</p>
               <div class="flex items-baseline space-x-2">
                 <p :class="[
-                  'text-2xl font-bold',
-                  (stats.roi ?? 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                  'text-3xl font-bold tracking-tight',
+                  (stats.roi ?? 0) >= 0 ? 'text-green-600 dark:text-green-400 drop-shadow-sm' : 'text-red-600 dark:text-red-400 drop-shadow-sm'
                 ]">
                   {{ ((stats.roi ?? 0) * 100).toFixed(2) }}%
                 </p>
                 <svg 
                   v-if="(stats.roi ?? 0) >= 0"
-                  class="w-5 h-5 text-green-600 dark:text-green-400" 
+                  class="w-6 h-6 text-green-600 dark:text-green-400" 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -100,7 +119,7 @@
                 </svg>
                 <svg 
                   v-else
-                  class="w-5 h-5 text-red-600 dark:text-red-400" 
+                  class="w-6 h-6 text-red-600 dark:text-red-400" 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -109,31 +128,31 @@
                 </svg>
               </div>
             </div>
-            <div class="p-4 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-900/10 dark:to-transparent rounded-lg border border-blue-200/50 dark:border-blue-800/50">
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Total P&L</p>
+            <div class="p-4 bg-gradient-to-br from-blue-50/30 to-transparent dark:from-blue-900/20 dark:to-transparent rounded-xl border border-blue-200/30 dark:border-blue-800/30 backdrop-blur-sm">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wider">Total P&L</p>
               <p :class="[
-                'text-2xl font-bold',
+                'text-3xl font-bold tracking-tight',
                 ((stats.realized_pnl_quote ?? 0) + (stats.unrealized_pnl_quote ?? 0)) >= 0 
-                  ? 'text-green-600 dark:text-green-400' 
-                  : 'text-red-600 dark:text-red-400'
+                  ? 'text-green-600 dark:text-green-400 drop-shadow-sm' 
+                  : 'text-red-600 dark:text-red-400 drop-shadow-sm'
               ]">
                 ${{ ((stats.realized_pnl_quote ?? 0) + (stats.unrealized_pnl_quote ?? 0)).toFixed(2) }}
               </p>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Realized + Unrealized</p>
             </div>
-            <div class="p-4 bg-gradient-to-br from-purple-50/50 to-transparent dark:from-purple-900/10 dark:to-transparent rounded-lg border border-purple-200/50 dark:border-purple-800/50">
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Realized P&L</p>
+            <div class="p-4 bg-gradient-to-br from-purple-50/30 to-transparent dark:from-purple-900/20 dark:to-transparent rounded-xl border border-purple-200/30 dark:border-purple-800/30 backdrop-blur-sm">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wider">Realized P&L</p>
               <p :class="[
-                'text-xl font-bold',
+                'text-2xl font-bold tracking-tight',
                 (stats.realized_pnl_quote ?? 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
               ]">
                 ${{ (stats.realized_pnl_quote ?? 0).toFixed(2) }}
               </p>
             </div>
-            <div class="p-4 bg-gradient-to-br from-indigo-50/50 to-transparent dark:from-indigo-900/10 dark:to-transparent rounded-lg border border-indigo-200/50 dark:border-indigo-800/50">
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Unrealized P&L</p>
+            <div class="p-4 bg-gradient-to-br from-indigo-50/30 to-transparent dark:from-indigo-900/20 dark:to-transparent rounded-xl border border-indigo-200/30 dark:border-indigo-800/30 backdrop-blur-sm">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wider">Unrealized P&L</p>
               <p :class="[
-                'text-xl font-bold',
+                'text-2xl font-bold tracking-tight',
                 (stats.unrealized_pnl_quote ?? 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
               ]">
                 ${{ (stats.unrealized_pnl_quote ?? 0).toFixed(2) }}
@@ -210,10 +229,12 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
-      
-      <!-- Strategy Information - Grouped -->
-      <div class="card mb-6">
+
+      <!-- Configuration Tab -->
+      <div v-if="activeTab === 'Configuration'" class="space-y-6">
+      <div class="glass-card mb-6 p-6 rounded-2xl">
         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Strategy Information</h2>
         
         <!-- Core Configuration -->
@@ -264,7 +285,7 @@
       </div>
       
       <!-- Dip-Buy Settings -->
-      <div v-if="strategy.dip_enabled" class="card mb-6">
+      <div v-if="strategy.dip_enabled" class="glass-card mb-6 p-6 rounded-2xl">
         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Dip-Buy Settings</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
@@ -288,10 +309,12 @@
             <p class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ strategy.dip_cooldown_seconds }}s</p>
           </div>
         </div>
+        </div>
       </div>
-      
-      <!-- Recent Orders -->
-      <div class="card">
+
+      <!-- Orders Tab -->
+      <div v-if="activeTab === 'Orders'">
+      <div class="glass-card p-6 rounded-2xl">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">Recent Orders</h2>
           <div class="flex items-center space-x-3">
@@ -347,8 +370,8 @@
           </div>
           
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead class="bg-gray-50 dark:bg-gray-800">
+            <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+              <thead class="bg-gray-50/50 dark:bg-gray-800/50">
                 <tr>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Side</th>
@@ -359,7 +382,7 @@
                   <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
                 </tr>
               </thead>
-              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody class="bg-transparent divide-y divide-gray-200/50 dark:divide-gray-700/50">
                 <tr 
                   v-for="(order, index) in paginatedOrders" 
                   :key="order.id" 
@@ -456,9 +479,10 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
     
-    <div v-else-if="!error" class="card text-center py-12">
+    <div v-else-if="!error" class="glass-card text-center py-12 rounded-2xl">
       <svg class="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
@@ -493,6 +517,7 @@ const strategyId = ref<number | null>(null)
 const runningNow = ref(false)
 const pageSize = ref(10)
 const currentPage = ref(1)
+const activeTab = ref('Overview')
 
 // Use computed to make strategy reactive
 const strategy = computed(() => strategiesStore.currentStrategy)

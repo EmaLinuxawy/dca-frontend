@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4 overflow-y-auto">
-    <div class="card w-full max-w-md">
+  <div class="h-screen flex items-center justify-center p-4 overflow-y-auto relative z-10">
+    <div class="glass-card w-full max-w-md p-8 rounded-2xl">
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-12 h-12 bg-primary-600 dark:bg-primary-500 rounded-xl mb-4 shadow-lg">
           <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@
               v-model="username"
               type="text"
               placeholder="Enter your username or email"
-              class="input pl-10"
+              class="input pl-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
               required
               :disabled="authStore.isLoading"
             />
@@ -47,7 +47,7 @@
               v-model="password"
               type="password"
               placeholder="Enter your password"
-              class="input pl-10"
+              class="input pl-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
               required
               :disabled="authStore.isLoading"
             />

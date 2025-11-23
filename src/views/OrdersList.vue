@@ -7,26 +7,26 @@
     
     <!-- Summary Stats -->
     <div v-if="!loading && allOrders.length > 0" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="card">
+      <div class="glass-card p-6 rounded-2xl">
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Orders</p>
         <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ allOrders.length }}</p>
       </div>
-      <div class="card">
+      <div class="glass-card p-6 rounded-2xl">
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Filled</p>
         <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ orderStats.filled }}</p>
       </div>
-      <div class="card">
+      <div class="glass-card p-6 rounded-2xl">
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Volume</p>
         <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">${{ orderStats.totalVolume.toFixed(2) }}</p>
       </div>
-      <div class="card">
+      <div class="glass-card p-6 rounded-2xl">
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Fees</p>
         <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">${{ orderStats.totalFees.toFixed(2) }}</p>
       </div>
     </div>
     
     <!-- Enhanced Filters -->
-    <div class="card mb-6">
+    <div class="glass-card mb-6 p-6 rounded-2xl">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <!-- Search -->
         <div class="lg:col-span-2">
@@ -131,7 +131,7 @@
         </button>
       </div>
       
-      <div v-else class="card p-0 overflow-hidden">
+      <div v-else class="glass-card p-0 overflow-hidden rounded-2xl">
         <!-- Table Controls -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 border-b border-gray-200 dark:border-gray-700">
           <div class="text-sm text-gray-600 dark:text-gray-400">
@@ -154,8 +154,8 @@
         </div>
         
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead class="bg-gray-50 dark:bg-gray-800">
+          <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+            <thead class="bg-gray-50/50 dark:bg-gray-800/50">
               <tr>
                 <th 
                   class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -220,14 +220,14 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody class="bg-transparent divide-y divide-gray-200/50 dark:divide-gray-700/50">
               <tr 
                 v-for="(order, index) in paginatedOrders" 
                 :key="order.id" 
                 @click="$router.push(`/orders/${order.id}`)" 
                 :class="[
-                  'hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors',
-                  index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
+                  'hover:bg-gray-50/50 dark:hover:bg-gray-700/30 cursor-pointer transition-colors',
+                  index % 2 === 0 ? 'bg-transparent' : 'bg-gray-50/30 dark:bg-gray-800/30'
                 ]"
               >
                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ order.id }}</td>

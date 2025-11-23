@@ -14,52 +14,26 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-6">
       <ErrorAlert v-if="error" :error="error" @dismiss="error = null" />
       
-      <!-- Step Indicators -->
-      <div class="flex items-center justify-center mb-8">
-        <div class="flex items-center space-x-2">
-          <!-- Step 1 -->
-          <div class="flex items-center">
-            <div :class="[
-              'w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors',
-              'bg-primary-600 dark:bg-primary-500 text-white'
-            ]">
-              1
-            </div>
-            <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">Basic Info</span>
-          </div>
-          
-          <div class="w-12 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
-          
-          <!-- Step 2 -->
-          <div class="flex items-center">
-            <div :class="[
-              'w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors',
-              'bg-primary-600 dark:bg-primary-500 text-white'
-            ]">
-              2
-            </div>
-            <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">Order Settings</span>
-          </div>
-          
-          <div class="w-12 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
-          
-          <!-- Step 3 -->
-          <div class="flex items-center">
-            <div :class="[
-              'w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors',
-              formData.dip_enabled 
-                ? 'bg-primary-600 dark:bg-primary-500 text-white' 
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
-            ]">
-              3
-            </div>
-            <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">Dip-Buy (Optional)</span>
-          </div>
-        </div>
+      <!-- Tab Navigation -->
+      <div class="flex space-x-1 bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-xl mb-6 backdrop-blur-sm">
+        <button
+          type="button"
+          v-for="tab in ['Core', 'Limits', 'Dip-Buy']"
+          :key="tab"
+          @click="activeTab = tab"
+          :class="[
+            'flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50',
+            activeTab === tab
+              ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
+          ]"
+        >
+          {{ tab }}
+        </button>
       </div>
       
-      <!-- Basic Information -->
-      <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 transition-all duration-200">
+      <!-- Core Tab -->
+      <div v-if="activeTab === 'Core'" class="glass-card rounded-2xl p-6 md:p-8">
         <div class="mb-6">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Basic Information</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Define your trading pair, side, and investment interval.</p>
@@ -82,7 +56,7 @@
             <input 
               v-model="formData.name" 
               type="text" 
-              class="input focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A] transition-colors" 
+              class="input focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A] transition-colors bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 backdrop-blur-sm" 
               required 
               placeholder="My DCA Strategy"
               :class="{ 'border-red-500 dark:border-red-500': formData.name.trim() === '' && formData.name !== '' }"
@@ -99,8 +73,8 @@
                 v-model="formData.base_currency" 
                 type="text" 
                 class="input focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A] transition-colors uppercase" 
-                required 
-                placeholder="ETH"
+                required
+                placeholder="BTC"
                 :class="{ 'border-red-500 dark:border-red-500': formData.base_currency.trim() === '' && formData.base_currency !== '' }"
               />
             </div>
@@ -201,8 +175,8 @@
         </div>
       </div>
       
-      <!-- Order Settings -->
-      <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 transition-all duration-200">
+      <!-- Limits Tab -->
+      <div v-if="activeTab === 'Limits'" class="glass-card rounded-2xl p-6 md:p-8">
         <div class="mb-6">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Order Settings</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Control limits, slippage, and execution cadence.</p>
@@ -288,8 +262,8 @@
         </div>
       </div>
       
-      <!-- Dip-Buy Settings -->
-      <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 transition-all duration-200">
+      <!-- Dip-Buy Tab -->
+      <div v-if="activeTab === 'Dip-Buy'" class="glass-card rounded-2xl p-6 md:p-8">
         <div class="mb-6">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Dip-Buy Settings</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">Enable automatic buys on price drops.</p>
@@ -393,7 +367,7 @@
       </div>
       
       <!-- Enable Strategy -->
-      <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 transition-all duration-200">
+      <div class="glass-card rounded-2xl p-6 md:p-8">
         <div class="flex items-center">
           <input 
             v-model="formData.enabled" 
@@ -506,6 +480,7 @@ const mode = props.mode
 const loading = ref(mode === 'edit')
 const error = ref<string | null>(null)
 const showSuccessToast = ref(false)
+const activeTab = ref('Core')
 
 const formData = reactive<StrategyCreate>({
   name: '',

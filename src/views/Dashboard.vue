@@ -4,8 +4,8 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Welcome back{{ authStore.currentUser ? `, ${authStore.currentUser.username}` : '' }} 👋
+          <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+            Welcome back, <span class="text-gradient">{{ authStore.currentUser?.username || 'Trader' }}</span> 👋
           </h1>
           <p class="text-gray-600 dark:text-gray-400">
             Here's your trading overview

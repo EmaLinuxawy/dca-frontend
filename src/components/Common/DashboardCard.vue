@@ -1,7 +1,7 @@
 <template>
-  <div class="card hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-    <div class="relative">
+  <div class="glass-card rounded-2xl p-6 relative overflow-hidden group">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <div class="relative z-10">
       <slot></slot>
     </div>
   </div>

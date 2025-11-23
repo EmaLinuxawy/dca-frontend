@@ -17,7 +17,7 @@
     
     <div v-else>
       <!-- Enhanced Filters with Chips -->
-      <div class="card mb-6">
+      <div class="glass-card mb-6 p-6 rounded-2xl">
         <div class="mb-4">
           <label class="label">Search</label>
           <div class="relative">
@@ -30,7 +30,7 @@
               v-model="searchQuery"
               type="text"
               placeholder="Search by name, pair, or status..."
-              class="input pl-10"
+              class="input pl-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
               @keydown.escape="searchQuery = ''"
             />
           </div>
@@ -43,8 +43,8 @@
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
               statusFilter === '' 
-                ? 'bg-primary-600 text-white dark:bg-primary-500' 
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary-600 text-white dark:bg-primary-500 shadow-lg shadow-primary-500/20' 
+                : 'bg-gray-100/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 backdrop-blur-sm'
             ]"
           >
             All
@@ -54,8 +54,8 @@
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
               statusFilter === 'enabled' 
-                ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-2 border-green-300 dark:border-green-700' 
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-transparent'
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-700 shadow-lg shadow-green-500/10' 
+                : 'bg-gray-100/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 backdrop-blur-sm border border-transparent'
             ]"
           >
             Enabled
@@ -65,8 +65,8 @@
             :class="[
               'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
               statusFilter === 'disabled' 
-                ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border-2 border-gray-300 dark:border-gray-500' 
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-transparent'
+                ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 shadow-lg' 
+                : 'bg-gray-100/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 backdrop-blur-sm border border-transparent'
             ]"
           >
             Disabled
@@ -128,19 +128,22 @@
               <div
                 v-if="filteredStrategies[virtualRow.index]"
                 :class="[
-                  'card hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group relative',
-                  'border-2',
+                  'glass-card hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 group relative p-6 rounded-2xl',
+                  'border',
                   filteredStrategies[virtualRow.index].enabled
-                    ? 'border-green-200 dark:border-green-800/50 bg-gradient-to-br from-green-50/50 dark:from-green-900/5 to-transparent'
-                    : 'border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50/50 dark:from-gray-800/50 to-transparent'
+                    ? 'border-green-200/50 dark:border-green-800/30 bg-gradient-to-br from-green-50/30 dark:from-green-900/10 to-transparent'
+                    : 'border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-br from-gray-50/30 dark:from-gray-800/30 to-transparent'
                 ]"
               >
                 <!-- Top Section: Name, Status Toggle, Performance Metrics -->
                 <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                   <div class="flex justify-between items-start mb-3">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors flex-1">
+                    <router-link 
+                      :to="`/strategies/${filteredStrategies[virtualRow.index].id}`"
+                      class="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex-1 cursor-pointer"
+                    >
                       {{ filteredStrategies[virtualRow.index].name }}
-                    </h3>
+                    </router-link>
                     <!-- Quick Status Toggle -->
                     <div class="flex items-center space-x-2 ml-3">
                       <button
@@ -203,114 +206,94 @@
                 </div>
 
                 <!-- Bottom Section: Strategy Details -->
-                <div class="space-y-2 mb-4 text-sm">
-                  <div class="flex items-center text-gray-700 dark:text-gray-300">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                <div class="flex items-center gap-6 text-sm mb-4">
+                  <!-- Pair Badge -->
+                  <div class="flex items-center px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 font-semibold border border-gray-200 dark:border-gray-600">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
-                    <span class="text-gray-600 dark:text-gray-400">{{ filteredStrategies[virtualRow.index].base_currency }}/{{ filteredStrategies[virtualRow.index].quote_currency }}</span>
+                    {{ filteredStrategies[virtualRow.index].base_currency }}/{{ filteredStrategies[virtualRow.index].quote_currency }}
                   </div>
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center text-gray-700 dark:text-gray-300">
-                      <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span class="text-gray-600 dark:text-gray-400">${{ filteredStrategies[virtualRow.index].amount_quote }}</span>
-                    </div>
-                    <div class="flex items-center text-gray-700 dark:text-gray-300">
-                      <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span class="text-gray-600 dark:text-gray-400">{{ filteredStrategies[virtualRow.index].interval }}</span>
-                    </div>
+                  
+                  <!-- Amount -->
+                  <div class="flex items-center text-gray-600 dark:text-gray-400" title="Investment Amount">
+                    <svg class="w-4 h-4 mr-1.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-medium">${{ filteredStrategies[virtualRow.index].amount_quote }}</span>
+                  </div>
+
+                  <!-- Interval -->
+                  <div class="flex items-center text-gray-600 dark:text-gray-400" title="Execution Interval">
+                    <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-medium">{{ filteredStrategies[virtualRow.index].interval }}</span>
                   </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <!-- Primary Action: Run Now -->
+                <div class="grid grid-cols-4 gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <!-- Run Now -->
                   <button
                     @click="runStrategyNow(filteredStrategies[virtualRow.index].id)"
                     :disabled="runningStrategyId === filteredStrategies[virtualRow.index].id"
-                    class="flex-1 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-sm font-medium transition-colors bg-primary-50 text-primary-700 hover:bg-primary-100 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <svg v-if="runningStrategyId === filteredStrategies[virtualRow.index].id" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    <span>{{ runningStrategyId === filteredStrategies[virtualRow.index].id ? 'Running...' : 'Run Now' }}</span>
+                    <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Run</span>
                   </button>
 
-                  <!-- Secondary Action: View Details (combines View/Edit) -->
+                  <!-- Edit -->
                   <router-link
-                    :to="`/strategies/${filteredStrategies[virtualRow.index].id}`"
-                    class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg text-sm transition-colors flex items-center justify-center"
+                    :to="`/strategies/${filteredStrategies[virtualRow.index].id}/edit`"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
+                    <span>Edit</span>
                   </router-link>
 
-                  <!-- Dropdown Menu for Secondary Actions -->
-                  <div class="relative dropdown-container">
-                    <button
-                      @click.stop="toggleDropdown(filteredStrategies[virtualRow.index].id)"
-                      class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg text-sm transition-colors"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                      </svg>
-                    </button>
+                  <!-- Pause/Resume -->
+                  <button
+                    v-if="filteredStrategies[virtualRow.index].enabled"
+                    @click.stop="pauseStrategy(filteredStrategies[virtualRow.index].id)"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-sm font-medium transition-colors bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300 dark:hover:bg-amber-900/30"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Pause</span>
+                  </button>
+                  <button
+                    v-else
+                    @click.stop="resumeStrategy(filteredStrategies[virtualRow.index].id)"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-sm font-medium transition-colors bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-300 dark:hover:bg-green-900/30"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Resume</span>
+                  </button>
 
-                    <!-- Dropdown Menu -->
-                    <div
-                      v-if="activeDropdown === filteredStrategies[virtualRow.index].id"
-                      class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-[100]"
-                      @click.stop
-                    >
-                      <router-link
-                        :to="`/strategies/${filteredStrategies[virtualRow.index].id}/edit`"
-                        @click="activeDropdown = null"
-                        class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        <span>Edit</span>
-                      </router-link>
-                      <button
-                        v-if="filteredStrategies[virtualRow.index].enabled"
-                        @click="pauseStrategy(filteredStrategies[virtualRow.index].id); activeDropdown = null"
-                        class="w-full flex items-center space-x-2 px-4 py-2 text-sm text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Pause</span>
-                      </button>
-                      <button
-                        v-else
-                        @click="resumeStrategy(filteredStrategies[virtualRow.index].id); activeDropdown = null"
-                        class="w-full flex items-center space-x-2 px-4 py-2 text-sm text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Resume</span>
-                      </button>
-                      <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-                      <button
-                        @click="confirmDelete(filteredStrategies[virtualRow.index].id); activeDropdown = null"
-                        class="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        <span>Delete</span>
-                      </button>
-                    </div>
-                  </div>
+                  <!-- Delete -->
+                  <button
+                    @click.stop="confirmDelete(filteredStrategies[virtualRow.index].id)"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-sm font-medium transition-colors bg-red-50 text-red-700 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-300 dark:hover:bg-red-900/30"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Delete</span>
+                  </button>
                 </div>
               </div>
             </div>

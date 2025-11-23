@@ -6,7 +6,7 @@
     </div>
     
     <!-- Account Information -->
-    <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-6 transition-all duration-200">
+    <div class="glass-card rounded-2xl p-6 md:p-8 mb-6">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Account Information</h2>
         <button
@@ -70,7 +70,7 @@
     </div>
     
     <!-- Change Password -->
-    <div class="bg-white dark:bg-[#232436] rounded-xl shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-6 transition-all duration-200">
+    <div class="glass-card rounded-2xl p-6 md:p-8 mb-6">
       <div class="mb-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Change Password</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">Update your account password to keep it secure</p>
@@ -119,7 +119,7 @@
               v-model="passwordForm.currentPassword"
               :type="showCurrentPassword ? 'text' : 'password'"
               required
-              class="input pr-10 focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A] transition-colors"
+              class="input pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm"
               placeholder="Enter your current password"
             />
             <button
@@ -152,15 +152,14 @@
               required
               minlength="8"
               :class="[
-                'input pr-10 transition-colors',
+                'input pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm',
                 passwordForm.newPassword ? (
                   passwordStrength.score >= 2 
                     ? 'border-green-500 dark:border-green-500 focus:ring-green-500' 
                     : passwordStrength.score === 1
                     ? 'border-yellow-500 dark:border-yellow-500 focus:ring-yellow-500'
                     : 'border-red-500 dark:border-red-500 focus:ring-red-500'
-                ) : '',
-                'focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A]'
+                ) : ''
               ]"
               placeholder="Enter your new password"
               @input="validatePassword"
@@ -257,13 +256,12 @@
               :type="showConfirmPassword ? 'text' : 'password'"
               required
               :class="[
-                'input pr-10 transition-colors',
+                'input pr-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 focus:ring-primary-500 focus:border-primary-500 backdrop-blur-sm',
                 passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword 
                   ? 'border-red-500 dark:border-red-500 focus:ring-red-500' 
                   : passwordForm.confirmPassword && passwordForm.newPassword === passwordForm.confirmPassword
                   ? 'border-green-500 dark:border-green-500 focus:ring-green-500'
-                  : '',
-                'focus:bg-[#1E1F29] dark:focus:bg-[#1E1F29] hover:bg-gray-50 dark:hover:bg-[#2A2B3A]'
+                  : ''
               ]"
               placeholder="Confirm your new password"
             />
